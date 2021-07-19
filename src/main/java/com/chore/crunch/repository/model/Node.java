@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -26,6 +25,21 @@ public class Node {
     @DynamoDBRangeKey
     private String path;
     @DynamoDBAttribute(attributeName = "properties")
+    @DynamoDBTypeConvertedJson
     private List<Property> properties;
+
+
+    @Getter
+    @Setter
+    @Builder
+    @DynamoDBDocument
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Property {
+        private String id;
+        private String name;
+        private String type;
+        private String value;
+    }
 
 }
