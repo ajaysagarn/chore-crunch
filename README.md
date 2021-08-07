@@ -39,7 +39,7 @@ API's to attach S3 content to a specific node.
 ## Running this project:
 
 To be able to run this project you need to first create an instance of dynamoDB running locally
-or have table created within the AWS console.
+or have a table created within the AWS console.
 
 The dynamodb table must be created with the following configuration:
 
@@ -105,7 +105,7 @@ The dynamodb table must be created with the following configuration:
         ]
     }
 
-Once the table has been created modify the application.properties file under 
+Once the table has been created modify the 'application.properties' file under 
 "src/main/resources" to add the table name, aws credentials and the URL endpoint for
 dynamoDB.
 
