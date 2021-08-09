@@ -1,6 +1,6 @@
 # Dynamo repository service
 
-This library is an attempt at creating a microservice that can function as a document folder data storage stucture for dynamoDB.
+This library is an attempt at creating a microservice that can function as a document folder data storage structure for dynamoDB.
 
 Infomation will be structured in the form of Folders and documents, where there exists a hierarchical
 relationship between individual items stored within a table. An individual entity stored witin the 
