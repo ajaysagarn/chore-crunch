@@ -41,7 +41,7 @@ public class NodeDaoImpl implements NodeDao{
 
         if(isNodeId){
             NodeResponse node = mapper.load(NodeResponse.class, nodeId);
-            if(levels > 0)
+            if(node != null && levels > 0)
                 node.setChildren(getNodeChildren(node.getNodeId(),levels));
             return Optional.ofNullable(node);
         }else{

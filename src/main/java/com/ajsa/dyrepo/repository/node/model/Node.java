@@ -1,7 +1,7 @@
 package com.ajsa.dyrepo.repository.node.model;
 
+import com.ajsa.dyrepo.repository.property.model.Property;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.time.Instant;
@@ -41,7 +41,6 @@ public class Node {
     private Long modifiedAt;
 
     @DynamoDBAttribute(attributeName = "properties")
-    @DynamoDBTypeConvertedJson
     private List<Property> properties;
 
     public Node(){
@@ -58,19 +57,6 @@ public class Node {
         this.createdAt = (createdAt == null)? this.createdAt = Instant.now().getEpochSecond(): createdAt;
         this.modifiedAt = Instant.now().getEpochSecond();
         this.properties = properties;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @DynamoDBDocument
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Property {
-        private String id;
-        private String name;
-        private String type;
-        private String value;
     }
 
 }

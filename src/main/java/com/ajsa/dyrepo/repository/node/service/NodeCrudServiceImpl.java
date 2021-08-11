@@ -1,5 +1,6 @@
 package com.ajsa.dyrepo.repository.node.service;
 
+import com.ajsa.dyrepo.repository.property.model.Property;
 import com.ajsa.dyrepo.util.RepositoryException;
 import com.ajsa.dyrepo.repository.node.dao.NodeDao;
 import com.ajsa.dyrepo.repository.node.model.Node;
@@ -24,7 +25,7 @@ public class NodeCrudServiceImpl implements NodeCrudService{
     }
 
     @Override
-    public Node createNode(String parentNodeId, String nodeName, ArrayList<Node.Property> properties) throws RepositoryException {
+    public Node createNode(String parentNodeId, String nodeName, ArrayList<Property> properties) throws RepositoryException {
         try{
 
             Node node = new Node();
@@ -79,7 +80,7 @@ public class NodeCrudServiceImpl implements NodeCrudService{
 
 
     @Override
-    public Node updateNode(String nodeId, ArrayList<Node.Property> properties) throws RepositoryException {
+    public Node updateNode(String nodeId, ArrayList<Property> properties) throws RepositoryException {
         try{
             Node node = readNode(nodeId,0).get();
             node.setProperties(properties);

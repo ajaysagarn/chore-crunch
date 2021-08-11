@@ -1,6 +1,6 @@
 package com.ajsa.dyrepo.repository.property.dao;
 
-import com.ajsa.dyrepo.repository.node.model.Node.Property;
+import com.ajsa.dyrepo.repository.property.model.Property;
 import com.ajsa.dyrepo.util.RepositoryException;
 
 import java.util.Optional;
