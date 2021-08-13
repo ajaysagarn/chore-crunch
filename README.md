@@ -21,17 +21,14 @@ Creates the Top level Node for a new project or a site. All Other nodes within t
 
 These Api's allow performing Crud operations on a Node within dynamoDB.
 
-### Planned's Api's
-
 #### PROPERTY:
 [GET| PUT | POST | DELETE] - /api/v1/property
 
 API's to perform crud operations on individual properties of a Node.
 
-
 #### CONTENT:
 
-[GET| PUT | POST | DELETE] - /api/v1/content
+[GET| POST | DELETE] - /api/v1/content
 
 API's to attach S3 content to a specific node.
 
