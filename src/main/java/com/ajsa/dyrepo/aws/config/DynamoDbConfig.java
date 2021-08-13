@@ -8,6 +8,8 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,14 @@ public class DynamoDbConfig {
     @Value("${amazon.end-point.url}")
     private String awsDynamoDBEndPoint;
 
+    @Value("${amazon.region}")
+    private String region;
+
     @Value("${amazon.table}")
     public static String dynamoTable;
+
+    @Value("${amazon.s3.bucket}")
+    public static String bucket;
 
     @Bean
     public AWSCredentials amazonAWSCredentials() {
@@ -39,7 +47,7 @@ public class DynamoDbConfig {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
         return AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(awsDynamoDBEndPoint, ""))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(awsDynamoDBEndPoint, region))
                 .withCredentials(amazonAWSCredentialsProvider())
                 .build();
     }
@@ -48,5 +56,18 @@ public class DynamoDbConfig {
     public DynamoDBMapper mapper() {
         return new DynamoDBMapper(amazonDynamoDB());
     }
+
+    @Bean
+    public AmazonS3 s3Client(){
+        return AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                .build();
+    }
+
+    @Bean
+    public String S3Bucket(){
+        return bucket;
+    }
+
 
 }

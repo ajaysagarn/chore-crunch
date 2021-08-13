@@ -66,7 +66,7 @@ public class NodeCRUDController {
             @RequestParam(required = false) String nodePath,
             @RequestBody NodeProperties properties) {
         try {
-            Node response = nodeCrudService.updateNode((nodeId == null)?nodePath:nodeId,properties.getProperties());
+            Node response = nodeCrudService.updateNodeProperties((nodeId == null)?nodePath:nodeId,properties.getProperties());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (AmazonServiceException e) {
             throw new ResponseStatusException(HttpStatus.valueOf(e.getStatusCode()), e.getMessage(), e);
@@ -79,9 +79,10 @@ public class NodeCRUDController {
 
     @RequestMapping(value = "node", produces = {"application/json"}, method = RequestMethod.DELETE)
     public ResponseEntity deleteNode( @RequestParam(required = false) String nodeId,
-                                      @RequestParam(required = false) String nodePath) {
+                                      @RequestParam(required = false) String nodePath,
+                                      @RequestParam(required = false, defaultValue = "true") Boolean deleteContent) {
         try {
-            nodeCrudService.deleteNode((nodeId !=null)?nodeId:nodePath);
+            nodeCrudService.deleteNode((nodeId !=null)?nodeId:nodePath, deleteContent);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (AmazonServiceException e) {
             throw new ResponseStatusException(HttpStatus.valueOf(e.getStatusCode()), e.getMessage(), e);

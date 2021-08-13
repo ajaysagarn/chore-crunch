@@ -14,9 +14,11 @@ public interface NodeCrudService {
 
     public Optional<NodeResponse> readNode(String nodeId, Integer levels) throws RepositoryException;
 
-    public Node updateNode(String nodeId, ArrayList<Property> properties) throws RepositoryException;
+    public Node updateNodeProperties(String nodeId, ArrayList<Property> properties) throws RepositoryException;
 
-    public void deleteNode(String nodeId) throws RepositoryException;
+    public Node updateNode(Node n) throws RepositoryException;
+
+    public void deleteNode(String nodeId, Boolean deleteContent) throws RepositoryException;
 
     public Node createRepositoryNode();
 

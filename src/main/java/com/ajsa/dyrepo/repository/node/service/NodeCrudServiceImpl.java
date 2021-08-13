@@ -1,5 +1,6 @@
 package com.ajsa.dyrepo.repository.node.service;
 
+import com.ajsa.dyrepo.repository.content.service.ContentService;
 import com.ajsa.dyrepo.repository.property.model.Property;
 import com.ajsa.dyrepo.util.RepositoryException;
 import com.ajsa.dyrepo.repository.node.dao.NodeDao;
@@ -23,6 +24,9 @@ public class NodeCrudServiceImpl implements NodeCrudService{
     public NodeCrudServiceImpl(NodeDao nodeDao) {
         this.nodeDao = nodeDao;
     }
+
+    @Autowired
+    public ContentService contentService;
 
     @Override
     public Node createNode(String parentNodeId, String nodeName, ArrayList<Property> properties) throws RepositoryException {
@@ -80,7 +84,7 @@ public class NodeCrudServiceImpl implements NodeCrudService{
 
 
     @Override
-    public Node updateNode(String nodeId, ArrayList<Property> properties) throws RepositoryException {
+    public Node updateNodeProperties(String nodeId, ArrayList<Property> properties) throws RepositoryException {
         try{
             Node node = readNode(nodeId,0).get();
             node.setProperties(properties);
@@ -94,13 +98,30 @@ public class NodeCrudServiceImpl implements NodeCrudService{
     }
 
     @Override
-    public void deleteNode(String nodeId) throws RepositoryException {
+    public Node updateNode(Node n) throws RepositoryException {
         try{
+            return nodeDao.updateNode(n);
+        } catch (Exception e){
+            throw new RepositoryException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error updating node");
+        }
+    }
+
+
+    @Override
+    public void deleteNode(String nodeId, Boolean deleteContent) throws RepositoryException {
+        try{
+            String nodePath = nodeId;
             if(RepositoryUtils.isNodePathNodeId(nodeId)){
                 Node node = readNode(nodeId,0).get();
                 nodeId = node.getNodeId();
             }
+
+            if(deleteContent != null && deleteContent){
+                contentService.deleteNodeFolder(nodePath);
+            }
+
             nodeDao.deleteNode(nodeId);
+
         }catch(RepositoryException e){
             throw e;
         }catch (Exception e){

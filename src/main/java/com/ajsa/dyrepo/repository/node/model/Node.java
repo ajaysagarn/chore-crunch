@@ -1,5 +1,6 @@
 package com.ajsa.dyrepo.repository.node.model;
 
+import com.ajsa.dyrepo.repository.content.model.Content;
 import com.ajsa.dyrepo.repository.property.model.Property;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,12 +44,15 @@ public class Node {
     @DynamoDBAttribute(attributeName = "properties")
     private List<Property> properties;
 
+    @DynamoDBAttribute(attributeName = "content")
+    private List<Content> content;
+
     public Node(){
         this.createdAt = Instant.now().getEpochSecond();
         this.modifiedAt = Instant.now().getEpochSecond();
     }
 
-    public Node(String nodeId, String path, String name, String nodeType, String parentNodeId, Long createdAt, Long modifiedAt, List<Property> properties) {
+    public Node(String nodeId, String path, String name, String nodeType, String parentNodeId, Long createdAt, Long modifiedAt, List<Property> properties, List<Content> content) {
         this.nodeId = nodeId;
         this.path = path;
         this.name = name;
@@ -57,6 +61,7 @@ public class Node {
         this.createdAt = (createdAt == null)? this.createdAt = Instant.now().getEpochSecond(): createdAt;
         this.modifiedAt = Instant.now().getEpochSecond();
         this.properties = properties;
+        this.content = content;
     }
 
 }
