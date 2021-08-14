@@ -107,3 +107,9 @@ Once the table has been created modify the 'application.properties' file under
 dynamoDB.
 
 Finally, run the Application.java class to start SpringBoot's inbuilt tomcat server.
+
+# Open API Specifications
+
+Once the application is running. navigate to the url ' http://hostname:port/swagger' to view the openAPI specification and to test the REST APIs
+
+![alt text](https://raw.githubusercontent.com/ajaysagarn/dynamo-repository-service/main/images/swagger_openapi_spec.png)
