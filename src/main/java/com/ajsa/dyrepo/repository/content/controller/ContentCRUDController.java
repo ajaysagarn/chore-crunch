@@ -3,19 +3,18 @@ package com.ajsa.dyrepo.repository.content.controller;
 import com.ajsa.dyrepo.repository.content.model.Content;
 import com.ajsa.dyrepo.repository.content.model.ReadContentResponse;
 import com.ajsa.dyrepo.repository.content.service.ContentService;
-import com.ajsa.dyrepo.repository.node.model.Node;
 import com.ajsa.dyrepo.util.RepositoryException;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.internal.Mimetypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import software.amazon.awssdk.core.internal.util.Mimetype;
 
 import java.io.IOException;
 
@@ -53,6 +52,20 @@ public class ContentCRUDController {
            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
        }
    }
+
+    @GetMapping(value = "content/presigned", produces = Mimetype.MIMETYPE_TEXT_PLAIN)
+    public ResponseEntity getPresignedUrl(@RequestParam String nodeIdPath, @RequestParam(required = false) String contentId){
+        try {
+            String url = contentService.getPresignedContentUrl(nodeIdPath,contentId);
+            return ResponseEntity.status(HttpStatus.OK).body(url);
+        } catch (AmazonServiceException e) {
+            throw new ResponseStatusException(HttpStatus.valueOf(e.getStatusCode()), e.getMessage(), e);
+        }catch (RepositoryException e) {
+            return ResponseEntity.status(e.getStatus()).body(e.getErrorMessage());
+        } catch (AmazonClientException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
 
     @DeleteMapping(value = "content", produces = {"application/json"})
     public ResponseEntity deleteContent(@RequestParam String nodeIdPath, @RequestParam(required = false) String contentId){

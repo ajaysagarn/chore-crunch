@@ -1,9 +1,6 @@
 package com.ajsa.dyrepo.aws.config;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.*;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -13,6 +10,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 @Configuration
 public class DynamoDbConfig {
@@ -58,9 +58,14 @@ public class DynamoDbConfig {
     }
 
     @Bean
-    public AmazonS3 s3Client(){
-        return AmazonS3ClientBuilder.standard()
-                .withRegion(region)
+    public S3Client s3Client(){
+        return S3Client.builder().region(Region.of(region)).build();
+    }
+
+    @Bean
+    public S3Presigner  presigner(){
+        return S3Presigner.builder()
+                .region(Region.of(region))
                 .build();
     }
 
