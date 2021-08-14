@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class ContentServiceImpl implements ContentService{
                         constructContentPath(node.getPath(), contentId)
                 ).build();
 
-        PutObjectResult res = contentDao.addContent(content.getPath(),file);
-        content.setETag(res.getETag());
+        PutObjectResponse res = contentDao.addContent(content.getPath(),file);
+        content.setETag(res.eTag());
 
         List<Content> nodeContent = node.getContent();
         if(nodeContent == null)
@@ -110,6 +111,17 @@ public class ContentServiceImpl implements ContentService{
             nodePath = node.getPath();
         }
         contentDao.deleteFolder(nodePath.concat("/"));
+    }
+
+    @Override
+    public String getPresignedContentUrl(String nodeIdPath, String contentId) throws RepositoryException {
+        Node node = nodeService.readNode(nodeIdPath,0).get();
+        Optional<Content> ccon = getNodeContentWithId(node, contentId);
+
+        if(ccon.isEmpty()){
+            throw new RepositoryException(HttpStatus.NOT_FOUND.value(), "content with id "+contentId+"does not exist.");
+        }
+        return contentDao.getPresignedUrl(ccon.get().getPath());
     }
 
 
