@@ -1,5 +1,6 @@
 package com.ajsa.dyrepo.aws.config;
 
+import com.ajsa.dyrepo.util.NodeMapper;
 import com.amazonaws.auth.*;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -74,5 +75,7 @@ public class DynamoDbConfig {
         return bucket;
     }
 
+    @Bean
+    public NodeMapper nodeMapper() { return new NodeMapper();}
 
 }
