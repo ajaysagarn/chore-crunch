@@ -34,16 +34,9 @@ public class NodeCrudServiceImpl implements NodeCrudService{
 
             Node node = new Node();
 
-            //verify if the parentNodeId exists
-            //if not exists, return 404
+            boolean isNodeId = RepositoryUtils.isNodePathNodeId(parentNodeId);
             Optional<NodeResponse> parentNode = readNode(parentNodeId,0);
-
-            if(!parentNode.isPresent()){
-                throw new RepositoryException(
-                        HttpStatus.NOT_FOUND.value(),
-                        "Parent node with node Id ".concat(parentNodeId).concat(" not found.")
-                );
-            }
+            parentNodeId = parentNode.get().getNodeId();
 
             node.setParentNodeId(parentNodeId);
             if(parentNodeId.contains("-")){

@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface NodeCrudService {
 
-    public Node createNode(String parentNodeId, String nodeId, ArrayList<Property> properties) throws RepositoryException;
+    public Node createNode(String parentNodeIdPath, String nodeId, ArrayList<Property> properties) throws RepositoryException;
 
-    public Optional<NodeResponse> readNode(String nodeId, Integer levels) throws RepositoryException;
+    public Optional<NodeResponse> readNode(String nodeIdPath, Integer levels) throws RepositoryException;
 
-    public Node updateNodeProperties(String nodeId, ArrayList<Property> properties) throws RepositoryException;
+    public Node updateNodeProperties(String nodeIdPath, ArrayList<Property> properties) throws RepositoryException;
 
     public Node updateNode(Node n) throws RepositoryException;
 
