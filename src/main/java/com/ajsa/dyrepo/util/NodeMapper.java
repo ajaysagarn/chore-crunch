@@ -19,21 +19,23 @@ public class NodeMapper {
     public <T> Node toNode(T source) {
         Map<String,Object> s = mapper.convertValue(source, new TypeReference<Map<String, Object>>() {});
         Node node = new Node();
-        if(s.containsKey("id") && !s.get("id").equals(null)){
+        if(s.containsKey("id") && s.get("id") != null){
             node.setNodeId(s.get("id").toString());
         }
-        if(s.containsKey("name") && !s.get("name").equals(null)){
+        if(s.containsKey("name") && s.get("name") != null){
             node.setName(s.get("name").toString());
         }
 
         List<Property> properties = new ArrayList<>();
 
         for(Map.Entry<String, Object> value: s.entrySet()){
-            String type = value.getValue().getClass().getName();
-            properties.add(Property.builder()
-                    .name(value.getKey())
-                    .type(type.substring(type.lastIndexOf('.')+1,type.length()))
-                    .id(value.getKey()).value(value.getValue().toString()).build());
+            if(value != null && value.getValue() != null){
+                String type = value.getValue().getClass().getName();
+                properties.add(Property.builder()
+                        .name(value.getKey())
+                        .type(type.substring(type.lastIndexOf('.')+1,type.length()))
+                        .id(value.getKey()).value(value.getValue().toString()).build());
+            }
         }
 
         node.setProperties(properties);
@@ -43,6 +45,11 @@ public class NodeMapper {
     public <T> T nodeToClass(Node node, Class<T> destClass){
         Map<String,Object> d = new HashMap<>();
         List<Property> nodeProperties = node.getProperties();
+
+        if(node.getNodeId() != null)
+            d.put("id",node.getNodeId());
+        if(node.getName() != null)
+            d.put("name", node.getName());
 
         if(nodeProperties!= null){
             for (Property p: nodeProperties) {
